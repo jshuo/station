@@ -3,6 +3,7 @@ import { Route, Routes } from "react-router-dom"
 /* connect */
 import UnlockPage from "./select/UnlockPage"
 import AccessWithLedgerPage from "../ledger/AccessWithLedgerPage"
+import AccessWithSecuXPage from "../secux/AccessWithSecuXPage"
 
 /* create */
 import NewWalletPage from "./create/NewWalletPage"
@@ -24,6 +25,7 @@ const Auth = () => {
       {/* connect */}
       <Route path="unlock/:name" element={<UnlockPage />} />
       <Route path="ledger" element={<AccessWithLedgerPage />} />
+      <Route path="secux" element={<AccessWithSecuXPage />} />
 
       {/* create */}
       <Route path="new" element={<NewWalletPage />} />

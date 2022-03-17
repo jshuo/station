@@ -42,6 +42,11 @@ const ConnectWallet = ({ renderButton }: Props) => {
     })),
     {
       icon: <UsbIcon />,
+      to: "/auth/secux",
+      children: t("Access with SecuX"),
+    },
+    {
+      icon: <UsbIcon />,
       to: "/auth/ledger",
       children: t("Access with ledger"),
     },
@@ -65,7 +70,7 @@ const ConnectWallet = ({ renderButton }: Props) => {
         {!!available.length && (
           <FormHelp>
             Use <ExternalLink href={STATION}>Terra Station</ExternalLink> on the
-            browser to access with Ledger device
+            browser to access with SecuX device
           </FormHelp>
         )}
       </Grid>
