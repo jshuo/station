@@ -66,6 +66,15 @@ const useAuth = () => {
     [setWallet]
   )
 
+  const connectSecuX = useCallback(
+    (address: AccAddress, index = 0, bluetooth = false) => {
+      const wallet = { address, ledger: true as const, index, bluetooth }
+      storeWallet(wallet)
+      setWallet(wallet)
+    },
+    [setWallet]
+  )
+
   /* connected */
   const connectedWallet = useMemo(() => {
     if (!is.local(wallet)) return
@@ -159,7 +168,10 @@ const useAuth = () => {
       tx.body
     )
 
-    if (is.ledger(wallet)) {
+    if (true) {
+      const key = await getSecuXKey()
+      return await key.createSignatureAmino(doc)
+    } else if (is.ledger(wallet)) {
       const key = await getLedgerKey()
       return await key.createSignatureAmino(doc)
     } else {
@@ -229,6 +241,7 @@ const useAuth = () => {
     connect,
     connectPreconfigured,
     connectLedger,
+    connectSecuX,
     disconnect,
     lock,
     available,

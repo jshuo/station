@@ -19,7 +19,7 @@ interface Values {
 const AccessWithSecuXForm = () => {
   const { t } = useTranslation()
   const navigate = useNavigate()
-  const { connectLedger } = useAuth()
+  const { connectSecuX } = useAuth()
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<Error>()
 
@@ -43,7 +43,7 @@ const AccessWithSecuXForm = () => {
         : undefined
       // @ts-ignore
       const { accAddress } = await SecuXKey.create(transport, index)
-      connectLedger(accAddress, index, bluetooth)
+      connectSecuX(accAddress, index, bluetooth)
       navigate("/wallet", { replace: true })
     } catch (error) {
       setError(error as Error)
