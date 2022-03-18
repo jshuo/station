@@ -23,12 +23,18 @@ const isLedger = (wallet?: Wallet): wallet is LedgerWallet => {
   return "ledger" in wallet
 }
 
+const isSecuX = (wallet?: Wallet): wallet is SecuXWallet => {
+  if (!wallet) return false
+  return "secux" in wallet
+}
+
 const is = {
   local: isLocal,
   preconfigured: isPreconfigured,
   multisig: isMultisig,
   single: isSingle,
   ledger: isLedger,
+  SecuX: isSecuX,
 }
 
 export default is

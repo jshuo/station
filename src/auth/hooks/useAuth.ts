@@ -68,7 +68,7 @@ const useAuth = () => {
 
   const connectSecuX = useCallback(
     (address: AccAddress, index = 0, bluetooth = false) => {
-      const wallet = { address, ledger: true as const, index, bluetooth }
+      const wallet = { address, secux: true as const, index, bluetooth }
       storeWallet(wallet)
       setWallet(wallet)
     },
@@ -115,7 +115,7 @@ const useAuth = () => {
   }
   // eslint-disable-next-linenp
   const getSecuXKey = async () => {
-    if (!is.ledger(wallet)) throw new Error("Ledger device is not connected")
+    if (!is.SecuX(wallet)) throw new Error("SecuX device is not connected")
     const { index, bluetooth } = wallet
     const transport = bluetooth
       ? await BluetoothTransport.create(LEDGER_TRANSPORT_TIMEOUT)
@@ -168,7 +168,7 @@ const useAuth = () => {
       tx.body
     )
 
-    if (true) {
+    if (is.SecuX(wallet)) {
       const key = await getSecuXKey()
       return await key.createSignatureAmino(doc)
     } else if (is.ledger(wallet)) {
@@ -185,7 +185,16 @@ const useAuth = () => {
   const sign = async (txOptions: CreateTxOptions, password = "") => {
     if (!wallet) throw new Error("Wallet is not defined")
 
-    if (is.ledger(wallet)) {
+    if (is.SecuX(wallet)) {
+      const key = await getSecuXKey()
+      const wallet = lcd.wallet(key)
+      const { account_number: accountNumber, sequence } =
+        await wallet.accountNumberAndSequence()
+      const signMode = SignatureV2.SignMode.SIGN_MODE_LEGACY_AMINO_JSON
+      const unsignedTx = await create(txOptions)
+      const options = { chainID, accountNumber, sequence, signMode }
+      return await key.signTx(unsignedTx, options)
+    } else if (is.ledger(wallet)) {
       const key = await getLedgerKey()
       const wallet = lcd.wallet(key)
       const { account_number: accountNumber, sequence } =
