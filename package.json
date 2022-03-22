@@ -20,7 +20,7 @@
     "@mui/material": "^5.4.4",
     "@terra-money/ledger-terra-js": "^1.2.2",
     "@secux/transport-webusb": "^2.1.2",
-    "@secux/secux-terra-js": "https://github.com/jshuo/secux-terra-js.git",
+    "@secux/secux-terra-js": "https://github.com/jshuo/secux-terra-js.git#be5b5a1cdc5c16abb193bdada1699ad736892211",
     "@terra-money/log-finder-ruleset": "^3.0.0",
     "@terra-money/terra.js": "^3.0.8",
     "@terra-money/wallet-provider": "^3.8.0",
