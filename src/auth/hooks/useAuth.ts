@@ -117,11 +117,8 @@ const useAuth = () => {
   const getSecuXKey = async () => {
     if (!is.SecuX(wallet)) throw new Error("SecuX device is not connected")
     const { index, bluetooth } = wallet
-    const transport = bluetooth
-      ? await BluetoothTransport.create(LEDGER_TRANSPORT_TIMEOUT)
-      : undefined
     // @ts-ignore
-    return await SecuXKey.create(transport, index)
+    return await SecuXKey.create(transport, index, bluetooth)
   }
 
   /* manage: export */
