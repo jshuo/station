@@ -38,11 +38,8 @@ const AccessWithSecuXForm = () => {
     setError(undefined)
 
     try {
-      const transport = bluetooth
-        ? await BluetoothTransport.create(LEDGER_TRANSPORT_TIMEOUT)
-        : undefined
-      // @ts-ignore
-      const { accAddress } = await SecuXKey.create(transport, index)
+      let transport: any
+      const { accAddress } = await SecuXKey.create(transport, index, bluetooth)
       connectSecuX(accAddress, index, bluetooth)
       navigate("/wallet", { replace: true })
     } catch (error) {
