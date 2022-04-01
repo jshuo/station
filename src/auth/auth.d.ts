@@ -34,6 +34,7 @@ interface SecuXWallet {
   secux: true
   index: number
   bluetooth: boolean
+  name: string
 }
 
 interface StoredWallet extends SingleWallet {
