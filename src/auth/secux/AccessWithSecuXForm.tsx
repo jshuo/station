@@ -4,8 +4,6 @@ import { useNavigate } from "react-router-dom"
 import { useForm } from "react-hook-form"
 import UsbIcon from "@mui/icons-material/Usb"
 import { SecuXKey } from "@secux/secux-terra-js"
-import BluetoothTransport from "@ledgerhq/hw-transport-web-ble"
-import { LEDGER_TRANSPORT_TIMEOUT } from "config/constants"
 import { Form, FormError, FormItem, FormWarning } from "components/form"
 import { Checkbox, Input, Submit } from "components/form"
 import validate from "../scripts/validate"
@@ -38,7 +36,8 @@ const AccessWithSecuXForm = () => {
     setError(undefined)
 
     try {
-      let transport: any
+      const transport = undefined
+      // @ts-ignore
       const { accAddress } = await SecuXKey.create(transport, index, bluetooth)
       connectSecuX(accAddress, index, bluetooth)
       navigate("/wallet", { replace: true })
