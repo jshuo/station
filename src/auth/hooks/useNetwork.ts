@@ -34,9 +34,11 @@ export const useNetworkOptions = () => {
 export const useNetwork = (): CustomNetwork => {
   const networks = useNetworks()
   const network = useRecoilValue(networkState)
-  const wallet = useWallet()
+  // const wallet = useWallet()
 
   if (sandbox) return networks[network] ?? networks.mainnet
+  // secux
+  // return wallet.network
   return networks.testnet
 }
 
