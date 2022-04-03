@@ -37,7 +37,7 @@ export const useNetwork = (): CustomNetwork => {
   const wallet = useWallet()
 
   if (sandbox) return networks[network] ?? networks.mainnet
-  return wallet.network
+  return networks.testnet
 }
 
 export const useNetworkName = () => {
