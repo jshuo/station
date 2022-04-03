@@ -1,13 +1,13 @@
-import { useState } from "react"
-import { useTranslation } from "react-i18next"
-import { useNavigate } from "react-router-dom"
-import { useForm } from "react-hook-form"
-import UsbIcon from "@mui/icons-material/Usb"
-import { SecuXKey } from "@secux/secux-terra-js"
-import { Form, FormError, FormItem, FormWarning } from "components/form"
-import { Checkbox, Input, Submit } from "components/form"
-import validate from "../scripts/validate"
-import useAuth from "../hooks/useAuth"
+import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
+import { useForm } from 'react-hook-form'
+import UsbIcon from '@mui/icons-material/Usb'
+import { SecuXKey } from '@secux/secux-terra-js'
+import { Form, FormError, FormItem, FormWarning } from 'components/form'
+import { Checkbox, Input, Submit } from 'components/form'
+import validate from '../scripts/validate'
+import useAuth from '../hooks/useAuth'
 
 interface Values {
   index: number
@@ -23,8 +23,8 @@ const AccessWithSecuXForm = () => {
 
   /* form */
   const form = useForm<Values>({
-    mode: "onChange",
-    defaultValues: { index: 0, bluetooth: false },
+    mode: 'onChange',
+    defaultValues: { index: 0, bluetooth: false }
   })
 
   const { register, watch, handleSubmit, formState } = form
@@ -40,7 +40,7 @@ const AccessWithSecuXForm = () => {
       // @ts-ignore
       const { accAddress } = await SecuXKey.create(transport, index, bluetooth)
       connectSecuX(accAddress, index, bluetooth)
-      navigate("/wallet", { replace: true })
+      navigate('/wallet', { replace: true })
     } catch (error) {
       setError(error as Error)
     } finally {
@@ -52,30 +52,27 @@ const AccessWithSecuXForm = () => {
     <Form onSubmit={handleSubmit(submit)}>
       <section className="center">
         <UsbIcon style={{ fontSize: 56 }} />
-        <p>{t("Plug in a SecuX device")}</p>
+        <p>{t('Plug in a SecuX device')}</p>
       </section>
 
-      <FormItem /* do not translate this */
-        label="Index"
-        error={errors.index?.message}
-      >
+      <FormItem /* do not translate this */ label="Index" error={errors.index?.message}>
         <Input
-          {...register("index", {
+          {...register('index', {
             valueAsNumber: true,
-            validate: validate.index,
+            validate: validate.index
           })}
         />
 
-        {index !== 0 && <FormWarning>{t("Default index is 0")}</FormWarning>}
+        {index !== 0 && <FormWarning>{t('Default index is 0')}</FormWarning>}
 
-        <Checkbox {...register("bluetooth")} checked={bluetooth}>
+        {/* <Checkbox {...register("bluetooth")} checked={bluetooth}>
           Use Bluetooth
-        </Checkbox>
+        </Checkbox> */}
       </FormItem>
 
       {error && <FormError>{error.message}</FormError>}
 
-      <Submit submitting={isLoading}>{t("Connect")}</Submit>
+      <Submit submitting={isLoading}>{t('Connect')}</Submit>
     </Form>
   )
 }
