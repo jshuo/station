@@ -45,13 +45,14 @@ const Coins = (props: any) => {
   const isWalletEmpty = useIsWalletEmpty()
   const { data: denoms, ...state } = useActiveDenoms()
   const coins = useCoins(denoms)
-  const [totalValue, setTotalValue] = useState(0)
+  // const [totalValue, setTotalValue] = useState(0)
+  // const preValueTotal = usePrevious(totalValue)
   const [toggle, setToggle] = useState(1)
-  const preValueTotal = usePrevious(totalValue)
+
   // @ts-ignore
 
   useEffect(() => {
-    console.log(`initializing interval`)
+    // console.log(`initializing interval`)
     const interval = setInterval(() => {
       if (!coins) return
       const [all, filtered] = coins
@@ -64,7 +65,7 @@ const Coins = (props: any) => {
       }
     }, 10000)
     return () => {
-      console.log(`clearing interval`)
+      // console.log(`clearing interval`)
       clearInterval(interval)
     }
   }, [toggle])

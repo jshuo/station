@@ -10,8 +10,6 @@ import validate from '../scripts/validate'
 import useAuth from '../hooks/useAuth'
 import { connect } from 'react-redux'
 
-const { SecuxScreenDevice } = require('@secux/protocol-device/lib/protocol-screendevice')
-
 // @ts-ignore
 function connectedDevice(device) {
   return {
