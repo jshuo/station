@@ -46,7 +46,7 @@ const Coins = (props: any) => {
   const { data: denoms, ...state } = useActiveDenoms()
   const coins = useCoins(denoms)
   const [totalValue, setTotalValue] = useState(0)
-  const preValueTotal = usePrevious({ totalValue })
+  const preValueTotal = usePrevious(totalValue)
 
   useEffect(() => {
     if (!coins) return
