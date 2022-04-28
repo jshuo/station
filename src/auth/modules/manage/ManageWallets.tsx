@@ -12,10 +12,17 @@ import useAuth from '../../hooks/useAuth'
 import AuthList from '../../components/AuthList'
 import ConnectedWallet from './ConnectedWallet'
 
+// @ts-ignore
+
 export const useManageWallet = () => {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const { wallet, disconnect, lock } = useAuth()
+
+  navigator.usb.addEventListener('disconnect', (event) => {
+    lock()
+    navigate('/', { replace: true })
+  })
 
   const toExport = {
     to: '/auth/export',

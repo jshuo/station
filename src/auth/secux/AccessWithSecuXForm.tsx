@@ -8,13 +8,31 @@ import { Form, FormError, FormItem, FormWarning } from 'components/form'
 import { Checkbox, Input, Submit } from 'components/form'
 import validate from '../scripts/validate'
 import useAuth from '../hooks/useAuth'
+import { connect } from 'react-redux'
+
+const { SecuxScreenDevice } = require('@secux/protocol-device/lib/protocol-screendevice')
+
+// @ts-ignore
+function connectedDevice(device) {
+  return {
+    type: 'CONNECTED_DEVICE',
+    connectedDevice: device
+  }
+}
+// @ts-ignore
+function WebUSBStatus(usbStatus) {
+  return {
+    type: 'CHANGE_STATUS',
+    usbStatus: usbStatus
+  }
+}
 
 interface Values {
   index: number
   bluetooth: boolean
 }
-
-const AccessWithSecuXForm = () => {
+// @ts-ignore
+const AccessWithSecuXForm = (props) => {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const { connectSecuX } = useAuth()
@@ -36,9 +54,16 @@ const AccessWithSecuXForm = () => {
     setError(undefined)
 
     try {
-      const transport = undefined
       // @ts-ignore
-      const { accAddress } = await SecuXKey.create(transport, index, bluetooth)
+      const { accAddress, transport } = await SecuXKey.create('', index, bluetooth)
+      props.connectedDevice(transport)
+      // @ts-ignore
+      await SecuxScreenDevice.SetAccount(transport, {
+        name: 'TERRA UST ',
+        path: "m/44'/330'/0'",
+        balance: 'https://secux-terra.netlify.app'
+      })
+      props.WebUSBStatus('connected')
       connectSecuX(accAddress, index, bluetooth)
       navigate('/wallet', { replace: true })
     } catch (error) {
@@ -77,4 +102,15 @@ const AccessWithSecuXForm = () => {
   )
 }
 
-export default AccessWithSecuXForm
+// @ts-ignore
+const mapDispatchToProps = (dispatch) => ({
+  // @ts-ignore
+  connectedDevice: (transport) => dispatch(connectedDevice(transport)),
+  // @ts-ignore
+  WebUSBStatus: (status) => dispatch(WebUSBStatus(status))
+})
+// @ts-ignore
+const mapStateToProps = (state) => ({
+  connectedDevice: state.connectedDevice
+})
+export default connect(mapStateToProps, mapDispatchToProps)(AccessWithSecuXForm)
