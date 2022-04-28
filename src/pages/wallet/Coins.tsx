@@ -78,8 +78,6 @@ const Coins = (props: any) => {
     const valueTotal = values.length ? BigNumber.sum(...values).toNumber() : 0
     return (
       <>
-        <button onClick={() => setTotalValue(valueTotal)}>Update Balance on Device</button>
-
         <Read className={styles.total} amount={valueTotal} token={currency} auto approx />
 
         <Grid gap={12}>
