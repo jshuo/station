@@ -26,7 +26,7 @@ const updateDeviceScreen = async (value, connectedDevice) => {
   await SecuxScreenDevice.SetAccount(connectedDevice, {
     name: 'TERRA UST ',
     path: "m/44'/330'/0'",
-    balance: value.toString()
+    balance: value
   })
 }
 // @ts-ignore
@@ -46,26 +46,28 @@ const Coins = (props: any) => {
   const { data: denoms, ...state } = useActiveDenoms()
   const coins = useCoins(denoms)
   const [totalValue, setTotalValue] = useState(0)
+  const [toggle, setToggle] = useState(1)
   const preValueTotal = usePrevious(totalValue)
+  // @ts-ignore
 
   useEffect(() => {
-    if (!coins) return
-    const [all, filtered] = coins
-    const values = all.map(({ value }) => value).filter(Boolean)
-    const valueTotal = values.length ? BigNumber.sum(...values).toNumber() : 0
-    if (props.usbStatus === 'connected') {
-      setTotalValue(valueTotal)
-      if (preValueTotal !== valueTotal && preValueTotal !== undefined) {
-        console.log('updateDeviceScreen')
-        updateDeviceScreen(valueTotal, props.connectedDevice)
+    console.log(`initializing interval`)
+    const interval = setInterval(() => {
+      if (!coins) return
+      const [all, filtered] = coins
+      const values = all.map(({ value }) => value).filter(Boolean)
+      const valueTotal = values.length ? BigNumber.sum(...values).toNumber() : 0
+      if (props.usbStatus === 'connected') {
+        const terraWeburl = 'https://secux-terra.netlify.app'
+        setToggle(1 - toggle)
+        updateDeviceScreen(toggle ? valueTotal.toString() : terraWeburl, props.connectedDevice)
       }
-    }
-    console.log(totalValue, preValueTotal)
+    }, 10000)
     return () => {
-      // Clean up the subscription
-      // subscription.unsubscribe();
+      console.log(`clearing interval`)
+      clearInterval(interval)
     }
-  }, [totalValue])
+  }, [toggle])
 
   const render = () => {
     if (!coins) return
@@ -76,6 +78,8 @@ const Coins = (props: any) => {
     const valueTotal = values.length ? BigNumber.sum(...values).toNumber() : 0
     return (
       <>
+        <button onClick={() => setTotalValue(valueTotal)}>Update Balance on Device</button>
+
         <Read className={styles.total} amount={valueTotal} token={currency} auto approx />
 
         <Grid gap={12}>

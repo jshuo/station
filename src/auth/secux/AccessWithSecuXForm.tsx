@@ -57,12 +57,6 @@ const AccessWithSecuXForm = (props) => {
       // @ts-ignore
       const { accAddress, transport } = await SecuXKey.create('', index, bluetooth)
       props.connectedDevice(transport)
-      // @ts-ignore
-      await SecuxScreenDevice.SetAccount(transport, {
-        name: 'TERRA UST ',
-        path: "m/44'/330'/0'",
-        balance: 'https://secux-terra.netlify.app'
-      })
       props.WebUSBStatus('connected')
       connectSecuX(accAddress, index, bluetooth)
       navigate('/wallet', { replace: true })
