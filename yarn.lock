@@ -1813,9 +1813,9 @@
     "@secux/utility" "^2.0.7"
     bignumber.js "^9.0.1"
 
-"@secux/secux-terra-js@https://github.com/jshuo/secux-terra-js.git#feature-dev":
+"@secux/secux-terra-js@https://github.com/jshuo/secux-terra-js.git#132439ce52d5b45d49740fb9760799c5ab16e48f":
   version "1.2.2"
-  resolved "https://github.com/jshuo/secux-terra-js.git#4d64c4f4f9c277a907a5f772cf82c56e66fc77e7"
+  resolved "https://github.com/jshuo/secux-terra-js.git#132439ce52d5b45d49740fb9760799c5ab16e48f"
   dependencies:
     "@secux/protocol-device" "^2.1.1"
     "@secux/protocol-transaction" "^2.1.3"
