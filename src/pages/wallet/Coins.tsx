@@ -17,25 +17,17 @@ import { Read } from 'components/token'
 import Asset from './Asset'
 import SelectMinimumValue from './SelectMinimumValue'
 import styles from './Coins.module.scss'
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 const { SecuxScreenDevice } = require('@secux/protocol-device/lib/protocol-screendevice')
 
 // @ts-ignore
-const updateDeviceScreen = async (value, connectedDevice) => {
+const updateDeviceScreen = async (name, value, connectedDevice) => {
   await SecuxScreenDevice.SetAccount(connectedDevice, {
-    name: 'TERRA UST ',
+    name: name,
     path: "m/44'/330'/0'",
     balance: value
   })
-}
-// @ts-ignore
-function usePrevious(value) {
-  const ref = useRef()
-  useEffect(() => {
-    ref.current = value
-  })
-  return ref.current
 }
 
 const Coins = (props: any) => {
@@ -45,8 +37,7 @@ const Coins = (props: any) => {
   const isWalletEmpty = useIsWalletEmpty()
   const { data: denoms, ...state } = useActiveDenoms()
   const coins = useCoins(denoms)
-  // const [totalValue, setTotalValue] = useState(0)
-  // const preValueTotal = usePrevious(totalValue)
+
   const [toggle, setToggle] = useState(1)
 
   // @ts-ignore
@@ -55,13 +46,17 @@ const Coins = (props: any) => {
     // console.log(`initializing interval`)
     const interval = setInterval(() => {
       if (!coins) return
-      const [all, filtered] = coins
+      const [all] = coins
       const values = all.map(({ value }) => value).filter(Boolean)
       const valueTotal = values.length ? BigNumber.sum(...values).toNumber() : 0
       if (props.usbStatus === 'connected') {
         const terraWeburl = 'https://secux-terra.netlify.app'
         setToggle(1 - toggle)
-        updateDeviceScreen(toggle ? valueTotal.toString() : terraWeburl, props.connectedDevice)
+        updateDeviceScreen(
+          toggle ? 'TERRA Total  ' : 'SecuX for TERRA',
+          toggle ? 'Approx. ' + (valueTotal / 1e6).toFixed(1).toString() + ' UST' : terraWeburl,
+          props.connectedDevice
+        )
       }
     }, 10000)
     return () => {
