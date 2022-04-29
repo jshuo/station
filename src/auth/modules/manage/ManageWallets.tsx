@@ -19,11 +19,6 @@ export const useManageWallet = () => {
   const navigate = useNavigate()
   const { wallet, disconnect, lock } = useAuth()
 
-  navigator.usb.addEventListener('disconnect', (event) => {
-    lock()
-    navigate('/', { replace: true })
-  })
-
   const toExport = {
     to: '/auth/export',
     children: t('Export wallet'),

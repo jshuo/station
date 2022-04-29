@@ -12,19 +12,21 @@ import { FormHelp } from 'components/form'
 import { useAuth } from 'auth'
 import SwitchWallet from 'auth/modules/select/SwitchWallet'
 import Connected from './Connected'
+import { connect } from 'react-redux'
 
 interface Props {
   renderButton?: RenderButton
+  deviceStatus: any
 }
 
-const ConnectWallet = ({ renderButton }: Props) => {
+const ConnectWallet = ({ renderButton, deviceStatus }: Props) => {
   const { t } = useTranslation()
 
   // const { connect, availableConnections } = useWallet()
   const { available } = useAuth()
 
   const address = useAddress()
-  if (address) return <Connected />
+  if (address && deviceStatus === 'connected') return <Connected />
 
   const defaultRenderButton: Props['renderButton'] = (open) => (
     <Button onClick={open} size="small" outline>
@@ -55,4 +57,9 @@ const ConnectWallet = ({ renderButton }: Props) => {
   )
 }
 
-export default ConnectWallet
+// @ts-ignore
+const mapStateToProps = (state) => ({
+  connectedDevice: state.connectedDevice,
+  deviceStatus: state.deviceStatus
+})
+export default connect(mapStateToProps)(ConnectWallet)

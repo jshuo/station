@@ -49,11 +49,11 @@ const Coins = (props: any) => {
       const [all] = coins
       const values = all.map(({ value }) => value).filter(Boolean)
       const valueTotal = values.length ? BigNumber.sum(...values).toNumber() : 0
-      if (props.usbStatus === 'connected') {
+      if (props.deviceStatus === 'connected') {
         const terraWeburl = 'https://secux-terra.netlify.app'
         setToggle(1 - toggle)
         updateDeviceScreen(
-          toggle ? 'TERRA Total  ' : 'SecuX for TERRA',
+          toggle ? 'Terra Total UST' : 'Terra Account',
           toggle ? 'Approx. ' + (valueTotal / 1e6).toFixed(1).toString() + ' UST' : terraWeburl,
           props.connectedDevice
         )
@@ -131,7 +131,7 @@ export const useCoins = (denoms?: Denom[]) => {
 // @ts-ignore
 const mapStateToProps = (state) => ({
   connectedDevice: state.connectedDevice,
-  usbStatus: state.usbStatus,
+  deviceStatus: state.deviceStatus,
   totalValue: state.totalValue
 })
 export default connect(mapStateToProps)(Coins)

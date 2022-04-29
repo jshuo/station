@@ -18,10 +18,10 @@ function connectedDevice(device) {
   }
 }
 // @ts-ignore
-function WebUSBStatus(usbStatus) {
+function changeDeviceStatus(deviceStatus) {
   return {
     type: 'CHANGE_STATUS',
-    usbStatus: usbStatus
+    deviceStatus: deviceStatus
   }
 }
 
@@ -50,12 +50,19 @@ const AccessWithSecuXForm = (props) => {
   const submit = async ({ index, bluetooth }: Values) => {
     setIsLoading(true)
     setError(undefined)
-
+    const deviceConnectedHandle = () => {
+      console.log('devicie connected')
+      props.changeDeviceStatus('connected')
+    }
+    const deviceDisconnectedHandle = () => {
+      console.log('devicie disconnected')
+      props.changeDeviceStatus('disconnected')
+    }
     try {
       // @ts-ignore
-      const { accAddress, transport } = await SecuXKey.create('', index, bluetooth)
+      const { accAddress, transport } = await SecuXKey.create('', index, bluetooth, deviceConnectedHandle, deviceDisconnectedHandle)
       props.connectedDevice(transport)
-      props.WebUSBStatus('connected')
+
       connectSecuX(accAddress, index, bluetooth)
       navigate('/wallet', { replace: true })
     } catch (error) {
@@ -99,7 +106,7 @@ const mapDispatchToProps = (dispatch) => ({
   // @ts-ignore
   connectedDevice: (transport) => dispatch(connectedDevice(transport)),
   // @ts-ignore
-  WebUSBStatus: (status) => dispatch(WebUSBStatus(status))
+  changeDeviceStatus: (status) => dispatch(changeDeviceStatus(status))
 })
 // @ts-ignore
 const mapStateToProps = (state) => ({
